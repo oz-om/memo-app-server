@@ -10,7 +10,7 @@ exports.register = (req,res)=>{
 
 exports.login = (req,res) => {
   authModel.login(req.body).then( result => {
-    req.session.userId = result.user[0];
+    req.session.isUser = result.user[0];
     res.send(result);
   }).catch(err => {
     res.send(err)
