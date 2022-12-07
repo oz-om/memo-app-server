@@ -54,10 +54,15 @@ app.get("/", (req, res) => {
     });
   }
 });
-const authRoute = require("./routs/auth-route");
-const notesRoute = require("./routs/notes");
-app.use("/", authRoute);
-app.use("/", notesRoute);
+const routes = {
+  authRoute: require("./routs/auth-route"),
+  notesRoute: require("./routs/notes"),
+  folderRoute: require("./routs/foldersRoute"),
+};
+
+app.use("/", routes.authRoute);
+app.use("/", routes.notesRoute);
+app.use("/", routes.folderRoute);
 
 const PORT = process.env.PORT || 4011;
 app.listen(PORT, () => {

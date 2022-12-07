@@ -9,8 +9,6 @@ const connection = db.createConnection({
 connection.connect((err) => {
   if (err) {
     console.log(err);
-  } else {
-    console.log("connection to dataBase success");
   }
 });
 
