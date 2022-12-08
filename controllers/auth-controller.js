@@ -22,3 +22,7 @@ exports.login = (req, res) => {
       res.send(err);
     });
 };
+
+exports.logout = (req, res) => {
+  req.session.destroy();
+};

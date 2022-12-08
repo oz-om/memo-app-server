@@ -1,8 +1,9 @@
 const Router = require("express").Router();
 
 const notesController = require("../controllers/notes-controller");
+const isUser = require("../controllers/isUser").isUser;
 
-Router.post("/getNotes", notesController.getNotes);
-Router.post("/addNote", notesController.addNote);
-Router.post("/deleteNote", notesController.deleteNote);
+Router.post("/getNotes", isUser, notesController.getNotes);
+Router.post("/addNote", isUser, notesController.addNote);
+Router.post("/deleteNote", isUser, notesController.deleteNote);
 module.exports = Router;
