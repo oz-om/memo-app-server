@@ -1,5 +1,3 @@
-const { v4: uuidv4 } = require("uuid");
-
 const db = require("mysql");
 const connection = db.createConnection({
   host: "127.0.0.1",
@@ -26,6 +24,7 @@ exports.getNotes = (owenId) => {
     });
   });
 };
+
 exports.addNote = (Note) => {
   const { ownerId, title, note, folder, atTime } = Note;
   return new Promise((resolve, reject) => {
@@ -41,6 +40,27 @@ exports.addNote = (Note) => {
           isPush: true,
           noteId: res.insertId,
           msg: "note was add successfully",
+        });
+      }
+    });
+  });
+};
+
+exports.updateNote = (updatedNote) => {
+  const { newTitle, newNote, id } = updatedNote;
+  return new Promise((resolve, reject) => {
+    const sql = "UPDATE notes SET note = ?, title = ? WHERE id = ?";
+    connection.query(sql, [newNote, newTitle, id], (err) => {
+      if (err) {
+        console.log(err);
+        reject({
+          isUpdate: false,
+          msg: "Opes! something went wrong! pleas try again?",
+        });
+      } else {
+        resolve({
+          isUpdate: true,
+          msg: "note was update successfully",
         });
       }
     });

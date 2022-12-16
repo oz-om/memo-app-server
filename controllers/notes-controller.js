@@ -32,3 +32,14 @@ exports.deleteNote = (req, res) => {
       res.send(err);
     });
 };
+
+exports.updateNote = (req, res) => {
+  notesModel
+    .updateNote(req.body)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
