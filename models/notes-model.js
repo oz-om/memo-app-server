@@ -26,10 +26,10 @@ exports.getNotes = (owenId) => {
 };
 
 exports.addNote = (Note) => {
-  const { ownerId, title, note, folder, atTime } = Note;
+  const { ownerId, title, note, folder, atTime, bgColor, color } = Note;
   return new Promise((resolve, reject) => {
-    const sql = "INSERT INTO notes (ownerId,title,note,folder,atTime) VALUES (?,?,?,?,?)";
-    connection.query(sql, [ownerId, title, note, folder, atTime], (err, res) => {
+    const sql = "INSERT INTO notes (ownerId,title,note,folder,atTime,bgColor,color) VALUES (?,?,?,?,?,?,?)";
+    connection.query(sql, [ownerId, title, note, folder, atTime, bgColor, color], (err, res) => {
       if (err) {
         reject({
           isPush: false,
@@ -47,10 +47,10 @@ exports.addNote = (Note) => {
 };
 
 exports.updateNote = (updatedNote) => {
-  const { newTitle, newNote, id } = updatedNote;
+  const { newTitle, newNote, id, bgColor, color } = updatedNote;
   return new Promise((resolve, reject) => {
-    const sql = "UPDATE notes SET note = ?, title = ? WHERE id = ?";
-    connection.query(sql, [newNote, newTitle, id], (err) => {
+    const sql = "UPDATE notes SET note = ?, title = ?, bgColor=?, color=? WHERE id = ?";
+    connection.query(sql, [newNote, newTitle, bgColor, color, id], (err) => {
       if (err) {
         console.log(err);
         reject({
