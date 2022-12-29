@@ -24,5 +24,16 @@ exports.login = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.session.destroy();
+  req.session.destroy((err) => {
+    if (err) {
+      res.send({
+        logout: false,
+        msg: "something went wrong, pleas try agin!",
+      });
+    } else {
+      res.send({
+        logout: true,
+      });
+    }
+  });
 };
