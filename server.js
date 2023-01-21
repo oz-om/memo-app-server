@@ -1,7 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+
 app.use(
   cors({
     credentials: true,
@@ -10,7 +12,24 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+// test db
 
+// const { Client } = require("pg");
+// const client = new Client(process.env.DB_URL);
+
+// (async () => {
+//   await client.connect();
+//   try {
+//     const results = await client.query("SELECT NOW()");
+//     console.log(results);
+//   } catch (err) {
+//     console.error("error executing query:", err);
+//   } finally {
+//     client.end();
+//   }
+// })();
+
+// test db
 const session = require("express-session");
 const sqlSessionStor = require("express-mysql-session")(session);
 
