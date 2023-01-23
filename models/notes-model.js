@@ -1,27 +1,18 @@
-const connection = require("../config/database");
-const connectionError = {
-  connection: false,
-  msg: "can't connect to database",
-};
+const db = require("../config/database");
 
 exports.getNotes = (owenId) => {
   return new Promise((resolve, reject) => {
+    let connection = db("get_notes");
     const sql = "SELECT * FROM notes WHERE user_id = ?";
-    connection.connect((err) => {
+    connection.query(sql, [owenId], (err, result) => {
       if (err) {
         console.log(err);
-        return reject(connectionError);
+        connection.end();
+        reject(err);
+      } else {
+        connection.end();
+        resolve(result);
       }
-      connection.query(sql, [owenId], (err, result) => {
-        if (err) {
-          console.log(err);
-          connection.end();
-          reject(err);
-        } else {
-          connection.end();
-          resolve(result);
-        }
-      });
     });
   });
 };
@@ -29,6 +20,7 @@ exports.getNotes = (owenId) => {
 exports.addNote = (Note) => {
   const { ownerId, title, note, category_id, atTime, bgColor, color } = Note;
   return new Promise((resolve, reject) => {
+    let connection = db("add_note");
     const sql = "INSERT INTO notes (user_id,title,note,category_id,atTime,bgColor,color) VALUES (?,?,?,?,?,?,?)";
     connection.query(sql, [ownerId, title, note, category_id, atTime, bgColor, color], (err, res) => {
       if (err) {
@@ -50,6 +42,7 @@ exports.addNote = (Note) => {
 exports.updateNote = (updatedNote) => {
   const { newTitle, newNote, id, bgColor, color } = updatedNote;
   return new Promise((resolve, reject) => {
+    let connection = db("update_note");
     const sql = "UPDATE notes SET note = ?, title = ?, bgColor=?, color=? WHERE id = ?";
     connection.query(sql, [newNote, newTitle, bgColor, color, id], (err) => {
       if (err) {
@@ -70,6 +63,7 @@ exports.updateNote = (updatedNote) => {
 
 exports.deleteNote = (noteId) => {
   return new Promise((resolve, reject) => {
+    let connection = db("delete_note");
     const sql = "DELETE FROM notes WHERE id = ?";
     connection.query(sql, [noteId], (err) => {
       if (err) {

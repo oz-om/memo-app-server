@@ -49,4 +49,14 @@ connection.connect((err) => {
   }
 });
 
-module.exports = connection;
+module.exports = (from) => {
+  const connection = db.createConnection(config[mode]);
+  connection.connect(function (err) {
+    if (err) {
+      console.log(`connectionRequest Failed ${err.stack} from ${from}`);
+    } else {
+      console.log(`DB connectionRequest Successful ${connection.threadId} from ${from}`);
+    }
+  });
+  return connection;
+};

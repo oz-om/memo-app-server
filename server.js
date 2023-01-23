@@ -31,8 +31,6 @@ app.use(
     secret: "strongSecretKey",
     store: sessionStor,
     cookie: {
-      sameSite: false,
-      secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24,
     },
   }),
