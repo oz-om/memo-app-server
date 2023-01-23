@@ -1,8 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  body-parser: ^1.20.1
-  cookie-parser: ^1.4.6
   cors: ^2.8.5
   dotenv: ^16.0.3
   express: ^4.18.2
@@ -11,8 +9,6 @@ specifiers:
   mysql2: ^3.0.1
 
 dependencies:
-  body-parser: 1.20.1
-  cookie-parser: 1.4.6
   cors: 2.8.5
   dotenv: 16.0.3
   express: 4.18.2
@@ -80,14 +76,6 @@ packages:
   /content-type/1.0.4:
     resolution: {integrity: sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==}
     engines: {node: '>= 0.6'}
-    dev: false
-
-  /cookie-parser/1.4.6:
-    resolution: {integrity: sha512-z3IzaNjdwUC2olLIB5/ITd0/setiaFMLYiZJle7xg5Fe9KWAceil7xszYfHHBtDFYLSgJduS2Ty0P1uJdPDJeA==}
-    engines: {node: '>= 0.8.0'}
-    dependencies:
-      cookie: 0.4.1
-      cookie-signature: 1.0.6
     dev: false
 
   /cookie-signature/1.0.6:
