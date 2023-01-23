@@ -4,31 +4,44 @@ const failed = {
   register: false,
   msg: "Opps! somthing went wrong!?",
 };
+const connectionError = {
+  connection: false,
+  msg: "can't connect to database",
+};
 
 exports.createAccount = (data) => {
   const { username, email, password } = data;
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM users WHERE username = ? OR email = ? ";
-    connection.query(sql, [username, email], (err, result) => {
+    connection.connect((err) => {
       if (err) {
         console.log(err);
-        return reject(failed);
+        return reject(connectionError);
       }
-      if (result.length == 0) {
-        const sql = "INSERT INTO users (username, email, password) VALUES (?,?,?)";
-        connection.query(sql, [username, email, password], (err, result) => {
-          if (err) {
-            console.log(err);
-            return reject(failed);
-          }
-          return resolve(result.insertId);
-        });
-      } else {
-        return reject({
-          register: false,
-          msg: "user already exist!",
-        });
-      }
+      connection.query(sql, [username, email], (err, result) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          return reject(failed);
+        }
+        if (result.length == 0) {
+          const sql = "INSERT INTO users (username, email, password) VALUES (?,?,?)";
+          connection.query(sql, [username, email, password], (err, result) => {
+            if (err) {
+              console.log(err);
+              connection.end();
+              return reject(failed);
+            }
+            return resolve(result.insertId);
+          });
+        } else {
+          connection.end();
+          return reject({
+            register: false,
+            msg: "user already exist!",
+          });
+        }
+      });
     });
   });
 };
@@ -37,34 +50,45 @@ exports.login = (data) => {
   const { email, password } = data;
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM users WHERE username = ? OR email = ?";
-    connection.query(sql, [email, email], (err, user) => {
+    connection.connect((err) => {
       if (err) {
-        return reject(err);
+        console.log(err);
+        return reject(connectionError);
       }
-      if (user.length > 0) {
-        if (user[0].password == password) {
-          const { id, username, email } = user[0];
-          return resolve({
-            login: true,
-            msg: "login success",
-            user: {
-              id,
-              username,
-              email,
-            },
-          });
+      connection.query(sql, [email, email], (err, user) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          return reject(err);
+        }
+        if (user.length > 0) {
+          if (user[0].password == password) {
+            const { id, username, email } = user[0];
+            connection.end();
+            return resolve({
+              login: true,
+              msg: "login success",
+              user: {
+                id,
+                username,
+                email,
+              },
+            });
+          } else {
+            connection.end();
+            return reject({
+              login: false,
+              msg: "user/email or password is wrong!",
+            });
+          }
         } else {
+          connection.end();
           return reject({
             login: false,
-            msg: "user/email or password is wrong!",
+            msg: "user not exists!",
           });
         }
-      } else {
-        return reject({
-          login: false,
-          msg: "user not exists!",
-        });
-      }
+      });
     });
   });
 };
@@ -72,13 +96,21 @@ exports.login = (data) => {
 exports.initCategory = (ownerId) => {
   const sql = `INSERT INTO categories (folder, user_id) VALUES (?,?)`;
   return new Promise((resolve, reject) => {
-    connection.query(sql, ["uncategorized", ownerId], (err) => {
+    connection.connect((err) => {
       if (err) {
         console.log(err);
-        return reject(failed);
+        return reject(connectionError);
       }
-      return resolve({
-        createCategory: true,
+      connection.query(sql, ["uncategorized", ownerId], (err) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          return reject(failed);
+        }
+        connection.end();
+        return resolve({
+          createCategory: true,
+        });
       });
     });
   });

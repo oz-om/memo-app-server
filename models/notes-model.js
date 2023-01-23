@@ -1,14 +1,27 @@
 const connection = require("../config/database");
+const connectionError = {
+  connection: false,
+  msg: "can't connect to database",
+};
 
 exports.getNotes = (owenId) => {
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM notes WHERE user_id = ?";
-    connection.query(sql, [owenId], (err, result) => {
+    connection.connect((err) => {
       if (err) {
-        reject(err);
-      } else {
-        resolve(result);
+        console.log(err);
+        return reject(connectionError);
       }
+      connection.query(sql, [owenId], (err, result) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          reject(err);
+        } else {
+          connection.end();
+          resolve(result);
+        }
+      });
     });
   });
 };

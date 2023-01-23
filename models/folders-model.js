@@ -1,20 +1,33 @@
 const connection = require("../config/database");
+const connectionError = {
+  connection: false,
+  msg: "can't connect to database",
+};
 
 exports.getFolders = (ownerId) => {
   return new Promise((resolve, reject) => {
     const sql = "SELECT id, folder FROM categories WHERE user_id = ?";
-    connection.query(sql, [ownerId], (err, result) => {
+    connection.connect((err) => {
       if (err) {
-        reject({
-          res: false,
-          msg: "something went wrong!",
-        });
-      } else {
-        resolve({
-          res: true,
-          folders: result,
-        });
+        console.log(err);
+        return reject(connectionError);
       }
+      connection.query(sql, [ownerId], (err, result) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          reject({
+            res: false,
+            msg: "something went wrong!",
+          });
+        } else {
+          connection.end();
+          resolve({
+            res: true,
+            folders: result,
+          });
+        }
+      });
     });
   });
 };
@@ -22,19 +35,28 @@ exports.getFolders = (ownerId) => {
 exports.addFolder = (ownerId, newFolder) => {
   return new Promise((resolve, reject) => {
     const sql = "INSERT INTO categories (user_id, folder) VALUES (?,?)";
-    connection.query(sql, [ownerId, newFolder], (err, result) => {
+    connection.connect((err) => {
       if (err) {
-        reject({
-          isAdd: false,
-          msg: "something went wrong!",
-        });
-      } else {
-        resolve({
-          isAdd: true,
-          id: result.insertId,
-          msg: "folder created successfully",
-        });
+        console.log(err);
+        return reject(connectionError);
       }
+      connection.query(sql, [ownerId, newFolder], (err, result) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          reject({
+            isAdd: false,
+            msg: "something went wrong!",
+          });
+        } else {
+          connection.end();
+          resolve({
+            isAdd: true,
+            id: result.insertId,
+            msg: "folder created successfully",
+          });
+        }
+      });
     });
   });
 };
@@ -42,18 +64,27 @@ exports.addFolder = (ownerId, newFolder) => {
 exports.deleteFolder = (id) => {
   return new Promise((resolve, reject) => {
     const sql = "DELETE FROM categories WHERE id = ?";
-    connection.query(sql, [id], (err) => {
+    connection.connect((err) => {
       if (err) {
-        reject({
-          isDeleted: false,
-          msg: "something went wrong!",
-        });
-      } else {
-        resolve({
-          isDeleted: true,
-          msg: "folder was deleted successfully",
-        });
+        console.log(err);
+        return reject(connectionError);
       }
+      connection.query(sql, [id], (err) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          reject({
+            isDeleted: false,
+            msg: "something went wrong!",
+          });
+        } else {
+          connection.end();
+          resolve({
+            isDeleted: true,
+            msg: "folder was deleted successfully",
+          });
+        }
+      });
     });
   });
 };
@@ -61,18 +92,27 @@ exports.deleteFolder = (id) => {
 exports.renameFolder = (id, newName) => {
   return new Promise((resolve, reject) => {
     const sql = "UPDATE categories SET folder = ? WHERE id = ?;";
-    connection.query(sql, [newName, id], (err) => {
+    connection.connect((err) => {
       if (err) {
-        reject({
-          isUpdate: false,
-          msg: "something went wrong!",
-        });
-      } else {
-        resolve({
-          isUpdate: true,
-          msg: "folder was renamed successfully",
-        });
+        console.log(err);
+        return reject(connectionError);
       }
+      connection.query(sql, [newName, id], (err) => {
+        if (err) {
+          console.log(err);
+          connection.end();
+          reject({
+            isUpdate: false,
+            msg: "something went wrong!",
+          });
+        } else {
+          connection.end();
+          resolve({
+            isUpdate: true,
+            msg: "folder was renamed successfully",
+          });
+        }
+      });
     });
   });
 };

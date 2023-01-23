@@ -49,14 +49,4 @@ connection.connect((err) => {
   }
 });
 
-connection.on("close", () => {
-  console.log("Connection closed, re-establishing connection");
-  connection.connect((err) => {
-    if (err) {
-      console.log("failed connection to database");
-      console.log(err.code);
-    }
-  });
-});
-
 module.exports = connection;
