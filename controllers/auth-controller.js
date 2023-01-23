@@ -3,8 +3,18 @@ const authModel = require("../models/auth-model");
 exports.register = (req, res) => {
   authModel
     .createAccount(req.body)
-    .then((result) => {
-      res.send(result);
+    .then((user_id) => {
+      authModel
+        .initCategory(user_id)
+        .then(() => {
+          res.send({
+            register: true,
+            msg: "account created successfully",
+          });
+        })
+        .catch((err) => {
+          res.send(err);
+        });
     })
     .catch((err) => {
       res.send(err);

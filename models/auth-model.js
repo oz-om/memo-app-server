@@ -1,22 +1,11 @@
-const db = require("mysql");
-const connection = db.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "root",
-  database: "memo_app_db",
-});
+const connection = require("../config/database");
 
-connection.connect((err) => {
-  if (err) {
-    console.log(err);
-  }
-});
+const failed = {
+  register: false,
+  msg: "Opps! somthing went wrong!?",
+};
 
 exports.createAccount = (data) => {
-  const failed = {
-    register: false,
-    msg: "Opps! somthing went wrong!?",
-  };
   const { username, email, password } = data;
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM users WHERE username = ? OR email = ? ";
@@ -32,10 +21,7 @@ exports.createAccount = (data) => {
             console.log(err);
             return reject(failed);
           }
-          return resolve({
-            register: true,
-            msg: "account created successfully",
-          });
+          return resolve(result.insertId);
         });
       } else {
         return reject({
@@ -79,6 +65,21 @@ exports.login = (data) => {
           msg: "user not exists!",
         });
       }
+    });
+  });
+};
+
+exports.initCategory = (ownerId) => {
+  const sql = `INSERT INTO categories (folder, user_id) VALUES (?,?)`;
+  return new Promise((resolve, reject) => {
+    connection.query(sql, ["uncategorized", ownerId], (err) => {
+      if (err) {
+        console.log(err);
+        return reject(failed);
+      }
+      return resolve({
+        createCategory: true,
+      });
     });
   });
 };

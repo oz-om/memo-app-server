@@ -12,32 +12,15 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
-// test db
 
-// const { Client } = require("pg");
-// const client = new Client(process.env.DB_URL);
-
-// (async () => {
-//   await client.connect();
-//   try {
-//     const results = await client.query("SELECT NOW()");
-//     console.log(results);
-//   } catch (err) {
-//     console.error("error executing query:", err);
-//   } finally {
-//     client.end();
-//   }
-// })();
-
-// test db
 const session = require("express-session");
 const sqlSessionStor = require("express-mysql-session")(session);
+const mode = process.env.NODE_ENV;
 
+const config = require("./config/config");
+const dbInfo = config[mode];
 const options = {
-  host: "127.0.0.1",
-  user: "root",
-  password: "root",
-  database: "memo_app_db",
+  ...dbInfo,
   schema: {
     tableName: "sessions",
     columnNames: {

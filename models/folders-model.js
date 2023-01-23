@@ -1,20 +1,8 @@
-const db = require("mysql");
-const connection = db.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "root",
-  database: "memo_app_db",
-});
-
-connection.connect((err) => {
-  if (err) {
-    console.log(err);
-  }
-});
+const connection = require("../config/database");
 
 exports.getFolders = (ownerId) => {
   return new Promise((resolve, reject) => {
-    const sql = "SELECT folder FROM folders WHERE ownerId = ?";
+    const sql = "SELECT id, folder FROM categories WHERE user_id = ?";
     connection.query(sql, [ownerId], (err, result) => {
       if (err) {
         reject({
@@ -22,13 +10,9 @@ exports.getFolders = (ownerId) => {
           msg: "something went wrong!",
         });
       } else {
-        let folders = [];
-        result.forEach((folder) => {
-          folders.push(folder.folder);
-        });
         resolve({
           res: true,
-          folders,
+          folders: result,
         });
       }
     });
@@ -37,8 +21,8 @@ exports.getFolders = (ownerId) => {
 
 exports.addFolder = (ownerId, newFolder) => {
   return new Promise((resolve, reject) => {
-    const sql = "INSERT INTO folders (ownerId, folder) VALUES (?,?)";
-    connection.query(sql, [ownerId, newFolder], (err) => {
+    const sql = "INSERT INTO categories (user_id, folder) VALUES (?,?)";
+    connection.query(sql, [ownerId, newFolder], (err, result) => {
       if (err) {
         reject({
           isAdd: false,
@@ -47,6 +31,7 @@ exports.addFolder = (ownerId, newFolder) => {
       } else {
         resolve({
           isAdd: true,
+          id: result.insertId,
           msg: "folder created successfully",
         });
       }
@@ -54,10 +39,10 @@ exports.addFolder = (ownerId, newFolder) => {
   });
 };
 
-exports.deleteFolder = (ownerId, folderName) => {
+exports.deleteFolder = (id) => {
   return new Promise((resolve, reject) => {
-    const sql = "DELETE FROM folders WHERE ownerId = ? AND folder = ?";
-    connection.query(sql, [ownerId, folderName], (err) => {
+    const sql = "DELETE FROM categories WHERE id = ?";
+    connection.query(sql, [id], (err) => {
       if (err) {
         reject({
           isDeleted: false,
@@ -73,10 +58,10 @@ exports.deleteFolder = (ownerId, folderName) => {
   });
 };
 
-exports.renameFolder = (ownerId, oldName, newName) => {
+exports.renameFolder = (id, newName) => {
   return new Promise((resolve, reject) => {
-    const sql = "UPDATE folders SET folder = ? WHERE (folder = ?) AND (ownerId = ?);";
-    connection.query(sql, [newName, oldName, ownerId], (err) => {
+    const sql = "UPDATE categories SET folder = ? WHERE id = ?;";
+    connection.query(sql, [newName, id], (err) => {
       if (err) {
         reject({
           isUpdate: false,

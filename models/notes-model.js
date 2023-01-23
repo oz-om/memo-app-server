@@ -1,20 +1,8 @@
-const db = require("mysql");
-const connection = db.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "root",
-  database: "memo_app_db",
-});
-
-connection.connect((err) => {
-  if (err) {
-    console.log(err);
-  }
-});
+const connection = require("../config/database");
 
 exports.getNotes = (owenId) => {
   return new Promise((resolve, reject) => {
-    const sql = "SELECT * FROM notes WHERE ownerId = ?";
+    const sql = "SELECT * FROM notes WHERE user_id = ?";
     connection.query(sql, [owenId], (err, result) => {
       if (err) {
         reject(err);
@@ -26,10 +14,10 @@ exports.getNotes = (owenId) => {
 };
 
 exports.addNote = (Note) => {
-  const { ownerId, title, note, folder, atTime, bgColor, color } = Note;
+  const { ownerId, title, note, category_id, atTime, bgColor, color } = Note;
   return new Promise((resolve, reject) => {
-    const sql = "INSERT INTO notes (ownerId,title,note,folder,atTime,bgColor,color) VALUES (?,?,?,?,?,?,?)";
-    connection.query(sql, [ownerId, title, note, folder, atTime, bgColor, color], (err, res) => {
+    const sql = "INSERT INTO notes (user_id,title,note,category_id,atTime,bgColor,color) VALUES (?,?,?,?,?,?,?)";
+    connection.query(sql, [ownerId, title, note, category_id, atTime, bgColor, color], (err, res) => {
       if (err) {
         reject({
           isPush: false,

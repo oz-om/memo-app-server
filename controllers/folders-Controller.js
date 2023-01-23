@@ -16,17 +16,17 @@ exports.addFolder = (req, res) => {
 };
 
 exports.deleteFolder = (req, res) => {
-  const { ownerId, folderName } = req.body;
+  const { id } = req.body;
   foldersModel
-    .deleteFolder(ownerId, folderName)
+    .deleteFolder(id)
     .then((result) => res.send(result))
     .catch((err) => res.send(err));
 };
 
 exports.renameFolder = (req, res) => {
-  const { ownerId, oldName, newName } = req.body;
+  const { id, newName } = req.body;
   foldersModel
-    .renameFolder(ownerId, oldName, newName)
+    .renameFolder(id, newName)
     .then((result) => res.send(result))
     .catch((err) => res.send(err));
 };
