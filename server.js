@@ -5,19 +5,12 @@ const cookieParser = require("cookie-parser");
 const config = require("./config/config");
 const mode = process.env.NODE_ENV;
 
-const clientUrl = process.env.PRO_CLIENT_URL;
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+const clientUrl = process.env.CLIENT_URL;
 
 app.use(
   cors({
     credentials: true,
-    origin: ["http://127.0.0.1:5173", clientUrl],
+    origin: [clientUrl],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
