@@ -6,6 +6,14 @@ const config = require("./config/config");
 const mode = process.env.NODE_ENV;
 
 const clientUrl = process.env.PRO_CLIENT_URL;
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 app.use(
   cors({
     credentials: true,
@@ -14,12 +22,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", ["http://127.0.0.1:5173", clientUrl]);
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+
 app.use(express.json());
 app.use(cookieParser());
 
