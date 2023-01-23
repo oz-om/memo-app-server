@@ -5,17 +5,7 @@ const cookieParser = require("cookie-parser");
 const config = require("./config/config");
 const mode = process.env.NODE_ENV;
 
-const clientUrl = process.env.CLIENT_URL;
-
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  }),
-);
-
-app.use(express.json());
-app.use(cookieParser());
+app.use(express.json(), cookieParser());
 
 const session = require("express-session");
 const sqlSessionStor = require("express-mysql-session")(session);
@@ -41,8 +31,17 @@ app.use(
     secret: "strongSecretKey",
     store: sessionStor,
     cookie: {
+      sameSite: false,
+      secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24,
     },
+  }),
+);
+const clientUrl = process.env.CLIENT_URL;
+app.use(
+  cors({
+    origin: clientUrl,
+    credentials: true,
   }),
 );
 
