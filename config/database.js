@@ -1,4 +1,4 @@
-const db = require("mysql");
+const db = require("mysql2");
 const config = require("./config");
 
 const initQuery = `CREATE TABLE IF NOT EXISTS users (
@@ -47,6 +47,16 @@ connection.connect((err) => {
       }
     });
   }
+});
+
+connection.on("close", () => {
+  console.log("Connection closed, re-establishing connection");
+  connection.connect((err) => {
+    if (err) {
+      console.log("failed connection to database");
+      console.log(err.code);
+    }
+  });
 });
 
 module.exports = connection;

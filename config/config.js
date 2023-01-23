@@ -18,6 +18,9 @@ module.exports = {
     host: PRO_DB_HOST,
     port: PRO_PORT,
     multipleStatements: true,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
     ssl: {
       minVersion: "TLSv1.2",
       rejectUnauthorized: true,

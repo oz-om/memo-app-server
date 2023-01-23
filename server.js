@@ -1,16 +1,17 @@
-require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const config = require("./config/config");
+const mode = process.env.NODE_ENV;
 
+const clientUrl = mode == "development" ? process.env.CLIENT_URL : process.env.PRO_CLIENT_URL;
 app.use(
   cors({
     credentials: true,
-    origin: ['https://oz-memo.onrender.com'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-    // origin: "http://127.0.0.1:5173",
+    origin: [clientUrl],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use(express.json());
@@ -18,9 +19,6 @@ app.use(cookieParser());
 
 const session = require("express-session");
 const sqlSessionStor = require("express-mysql-session")(session);
-const mode = process.env.NODE_ENV;
-
-const config = require("./config/config");
 const dbInfo = config[mode];
 const options = {
   ...dbInfo,
