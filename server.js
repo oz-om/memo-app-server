@@ -7,14 +7,12 @@ const mode = process.env.NODE_ENV;
 
 const clientUrl = process.env.CLIENT_URL;
 
-app.use(
-  cors({
-    credentials: true,
-    origin: [clientUrl],
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
+app.use(cors());
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, application/json");
+  next();
+});
 
 app.use(express.json());
 app.use(cookieParser());
