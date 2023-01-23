@@ -7,7 +7,9 @@ const cookieParser = require("cookie-parser");
 app.use(
   cors({
     credentials: true,
-    origin: "https://memo-server-j4x6.onrender.com",
+    origin: ['https://oz-memo.onrender.com'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
     // origin: "http://127.0.0.1:5173",
   }),
 );
