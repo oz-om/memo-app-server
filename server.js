@@ -34,6 +34,7 @@ const options = {
 const sessionStor = new sqlSessionStor(options);
 app.use(
   session({
+    name: "auth",
     key: "auth",
     resave: false,
     saveUninitialized: false,
