@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const config = require("./config/config");
+const connection = require("./config/database");
 const mode = process.env.NODE_ENV;
 
 const clientUrl = process.env.CLIENT_URL;
@@ -16,6 +17,14 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+
+app.use((req, res, next) => {
+  connection.connect();
+  req.on("end", () => {
+    connection.end();
+  });
+  next();
+});
 
 const session = require("express-session");
 const sqlSessionStor = require("express-mysql-session")(session);
