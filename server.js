@@ -30,6 +30,7 @@ app.use(
     secret: "strongSecretKey",
     store: sessionStor,
     cookie: {
+      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24,
     },
   }),
