@@ -31,7 +31,9 @@ app.use(
     store: sessionStor,
     cookie: {
       sameSite: true,
-      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+      secure: true,
+      // maxAge: 1000 * 60 * 60 * 24,
     },
   }),
 );
