@@ -1,5 +1,4 @@
 const Router = require("express").Router();
-// const parser = require("body-parser").urlencoded({extended:true})
 
 const authController = require("../controllers/auth-controller");
 

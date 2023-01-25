@@ -1,4 +1,5 @@
 const authModel = require("../models/auth-model");
+const jwt = require("jsonwebtoken");
 
 exports.register = (req, res) => {
   authModel
@@ -25,8 +26,12 @@ exports.login = (req, res) => {
   authModel
     .login(req.body)
     .then((result) => {
-      req.session.isUser = result.user;
-      res.send(result);
+      const key = process.env.JWT_KEY;
+      const j_own = jwt.sign(result.user, key, {
+        expiresIn: "24h",
+      });
+
+      res.send({ ...result, j_own });
     })
     .catch((err) => {
       res.send(err);

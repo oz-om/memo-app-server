@@ -1,54 +1,26 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const config = require("./config/config");
-const mode = process.env.NODE_ENV;
+const cookie = require("cookie-parser");
+require("dotenv").config();
 
-app.use(express.json());
-
-const session = require("express-session");
-const sqlSessionStor = require("express-mysql-session")(session);
-const dbInfo = config[mode];
-const options = {
-  ...dbInfo,
-  schema: {
-    tableName: "sessions",
-    columnNames: {
-      session_id: "session_id",
-      expires: "expires",
-      data: "data",
-    },
-  },
-};
-const sessionStor = new sqlSessionStor(options);
-app.use(
-  session({
-    name: "auth",
-    key: "auth",
-    resave: false,
-    saveUninitialized: false,
-    secret: "strongSecretKey",
-    store: sessionStor,
-    cookie: {
-      sameSite: "none",
-      secure: true,
-      maxAge: 1000 * 60 * 60 * 24,
-    },
-  }),
-);
 const clientUrl = process.env.CLIENT_URL;
 app.use(
   cors({
     origin: clientUrl,
     credentials: true,
   }),
+  cookie(),
+  express.json(),
+  express.urlencoded({ extended: true }),
 );
 
-app.get("/", (req, res) => {
-  if (req.session.isUser) {
+const { isUser } = require("./middleware/isUser");
+app.get("/", isUser, (req, res) => {
+  if (req.isUser) {
     res.send({
       login: true,
-      user: req.session.isUser,
+      user: req.isUser,
     });
   } else {
     res.send({

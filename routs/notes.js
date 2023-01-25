@@ -1,7 +1,7 @@
 const Router = require("express").Router();
 
 const notesController = require("../controllers/notes-controller");
-const isUser = require("../controllers/isUser").isUser;
+const isUser = require("../middleware/isUser").isUser;
 
 Router.post("/getNotes", isUser, notesController.getNotes);
 Router.post("/addNote", isUser, notesController.addNote);
