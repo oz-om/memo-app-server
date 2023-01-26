@@ -14,6 +14,7 @@ app.use(
   express.json(),
   express.urlencoded({ extended: true }),
 );
+app.set("trust proxy", 1);
 
 const { isUser } = require("./middleware/isUser");
 app.get("/", isUser, (req, res) => {

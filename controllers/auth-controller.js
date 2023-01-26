@@ -32,7 +32,8 @@ exports.login = (req, res) => {
       });
       const { id, ...user } = result;
       res.cookie("j_own", j_own, {
-        sameSite: false,
+        secure: true,
+        sameSite: "none",
       });
       res.send({
         login: true,
