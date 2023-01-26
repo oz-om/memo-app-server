@@ -31,7 +31,9 @@ exports.login = (req, res) => {
         expiresIn: "24h",
       });
       const { id, ...user } = result;
-      res.cookie("j_own", j_own);
+      res.cookie("j_own", j_own, {
+        sameSite: false,
+      });
       res.send({
         login: true,
         user,
