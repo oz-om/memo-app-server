@@ -9,6 +9,7 @@ app.use(
   cors({
     origin: clientUrl,
     credentials: true,
+    exposedHeaders: ["set-cookie"],
   }),
   cookie(),
   express.json(),
