@@ -25,6 +25,7 @@ exports.isUser = (req, res, next) => {
 };
 
 exports.verify = (req, res, next) => {
+  console.log(req.cookies);
   const key = process.env.JWT_KEY;
   const token = req.cookies.j_own;
   if (token) {

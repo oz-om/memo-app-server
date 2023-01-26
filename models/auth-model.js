@@ -52,13 +52,9 @@ exports.login = (data) => {
           const { id, username, email } = user[0];
           connection.end();
           return resolve({
-            login: true,
-            msg: "login success",
-            user: {
-              id,
-              username,
-              email,
-            },
+            id,
+            username,
+            email,
           });
         } else {
           connection.end();

@@ -27,11 +27,15 @@ exports.login = (req, res) => {
     .login(req.body)
     .then((result) => {
       const key = process.env.JWT_KEY;
-      const j_own = jwt.sign(result.user, key, {
+      const j_own = jwt.sign(result, key, {
         expiresIn: "24h",
       });
-
-      res.send({ ...result, j_own });
+      const { id, ...user } = result;
+      res.send({
+        login: true,
+        user,
+        j_own,
+      });
     })
     .catch((err) => {
       res.send(err);
