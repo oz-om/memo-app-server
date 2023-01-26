@@ -2,7 +2,7 @@ const notesModel = require("../models/notes-model");
 
 exports.getNotes = (req, res) => {
   notesModel
-    .getNotes(req.body.ownerId)
+    .getNotes(req.userInfo.id)
     .then((notes) => {
       res.send(notes);
     })
@@ -12,8 +12,20 @@ exports.getNotes = (req, res) => {
 };
 
 exports.addNote = (req, res) => {
+  console.log(req.userInfo);
   notesModel
-    .addNote(req.body)
+    .addNote(req.userInfo.id, req.body)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
+exports.updateNote = (req, res) => {
+  notesModel
+    .updateNote(req.userInfo.id, req.body)
     .then((result) => {
       res.send(result);
     })
@@ -25,17 +37,6 @@ exports.addNote = (req, res) => {
 exports.deleteNote = (req, res) => {
   notesModel
     .deleteNote(req.body.noteId)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
-};
-
-exports.updateNote = (req, res) => {
-  notesModel
-    .updateNote(req.body)
     .then((result) => {
       res.send(result);
     })

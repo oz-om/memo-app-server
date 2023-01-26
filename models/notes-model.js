@@ -3,7 +3,7 @@ const db = require("../config/database");
 exports.getNotes = (owenId) => {
   return new Promise((resolve, reject) => {
     let connection = db("get_notes");
-    const sql = "SELECT * FROM notes WHERE user_id = ?";
+    const sql = "SELECT id, category_id, title, note, atTime, bgColor, color FROM notes WHERE user_id = ?";
     connection.query(sql, [owenId], (err, result) => {
       if (err) {
         console.log(err);
@@ -17,8 +17,8 @@ exports.getNotes = (owenId) => {
   });
 };
 
-exports.addNote = (Note) => {
-  const { ownerId, title, note, category_id, atTime, bgColor, color } = Note;
+exports.addNote = (ownerId, Note) => {
+  const { title, note, category_id, atTime, bgColor, color } = Note;
   return new Promise((resolve, reject) => {
     let connection = db("add_note");
     const sql = "INSERT INTO notes (user_id,title,note,category_id,atTime,bgColor,color) VALUES (?,?,?,?,?,?,?)";
@@ -39,12 +39,12 @@ exports.addNote = (Note) => {
   });
 };
 
-exports.updateNote = (updatedNote) => {
-  const { newTitle, newNote, id, bgColor, color } = updatedNote;
+exports.updateNote = (ownerId, updatedNote) => {
+  const { newTitle, newNote, bgColor, color } = updatedNote;
   return new Promise((resolve, reject) => {
     let connection = db("update_note");
     const sql = "UPDATE notes SET note = ?, title = ?, bgColor=?, color=? WHERE id = ?";
-    connection.query(sql, [newNote, newTitle, bgColor, color, id], (err) => {
+    connection.query(sql, [newNote, newTitle, bgColor, color, ownerId], (err) => {
       if (err) {
         console.log(err);
         reject({

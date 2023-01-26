@@ -2,15 +2,15 @@ const foldersModel = require("../models/folders-model");
 
 exports.getFolders = (req, res) => {
   foldersModel
-    .getFolders(req.body.ownerId)
+    .getFolders(req.userInfo.id)
     .then((result) => res.send(result))
     .catch((err) => res.send(err));
 };
 
 exports.addFolder = (req, res) => {
-  const { ownerId, newFolder } = req.body;
+  const { newFolder } = req.body;
   foldersModel
-    .addFolder(ownerId, newFolder)
+    .addFolder(req.userInfo.id, newFolder)
     .then((result) => res.send(result))
     .catch((err) => res.send(err));
 };

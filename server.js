@@ -7,7 +7,7 @@ require("dotenv").config();
 const clientUrl = process.env.CLIENT_URL;
 app.use(
   cors({
-    origin: clientUrl,
+    origin: "http://127.0.0.1:5173",
     credentials: true,
   }),
   cookie(),
@@ -30,7 +30,7 @@ app.get("/", isUser, (req, res) => {
 });
 const routes = {
   authRoute: require("./routs/auth-route"),
-  notesRoute: require("./routs/notes"),
+  notesRoute: require("./routs/notesRoute"),
   folderRoute: require("./routs/foldersRoute"),
 };
 
