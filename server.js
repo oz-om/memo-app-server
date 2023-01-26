@@ -7,7 +7,7 @@ require("dotenv").config();
 const clientUrl = process.env.CLIENT_URL;
 app.use(
   cors({
-    origin: "http://127.0.0.1:5173",
+    origin: clientUrl,
     credentials: true,
   }),
   cookie(),
