@@ -31,6 +31,7 @@ exports.login = (req, res) => {
         expiresIn: "24h",
       });
       const { id, ...user } = result;
+      res.setHeader("Set-Cookie", `j_own=${j_own}`);
       res.send({
         login: true,
         user,
