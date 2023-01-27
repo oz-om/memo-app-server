@@ -12,7 +12,6 @@ exports.getNotes = (req, res) => {
 };
 
 exports.addNote = (req, res) => {
-  console.log(req.userInfo);
   notesModel
     .addNote(req.userInfo.id, req.body)
     .then((result) => {
