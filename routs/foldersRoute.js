@@ -6,4 +6,5 @@ Router.post("/getFolders", verify, folderController.getFolders);
 Router.post("/addFolder", verify, folderController.addFolder);
 Router.post("/deleteFolder", verify, folderController.deleteFolder);
 Router.post("/renameFolder", verify, folderController.renameFolder);
+
 module.exports = Router;
