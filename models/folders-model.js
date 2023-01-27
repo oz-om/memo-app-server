@@ -16,7 +16,7 @@ exports.getFolders = (ownerId) => {
         connection.end();
         resolve({
           state: true,
-          folders: result,
+          folders: result.reverse(),
         });
       }
     });

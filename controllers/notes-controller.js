@@ -7,7 +7,7 @@ exports.getNotes = (req, res) => {
       res.send(notes);
     })
     .catch((err) => {
-      console.log(err);
+      res.send(err);
     });
 };
 
@@ -24,7 +24,7 @@ exports.addNote = (req, res) => {
 
 exports.updateNote = (req, res) => {
   notesModel
-    .updateNote(req.userInfo.id, req.body)
+    .updateNote(req.body)
     .then((result) => {
       res.send(result);
     })

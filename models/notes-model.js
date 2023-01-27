@@ -45,12 +45,12 @@ exports.addNote = (ownerId, Note) => {
   });
 };
 
-exports.updateNote = (ownerId, updatedNote) => {
-  const { newTitle, newNote, bgColor, color } = updatedNote;
+exports.updateNote = (updatedNote) => {
+  const { noteId, newTitle, newNote, bgColor, color } = updatedNote;
   return new Promise((resolve, reject) => {
     let connection = db("update_note");
     const sql = "UPDATE notes SET note = ?, title = ?, bgColor=?, color=? WHERE id = ?";
-    connection.query(sql, [newNote, newTitle, bgColor, color, ownerId], (err) => {
+    connection.query(sql, [newNote, newTitle, bgColor, color, noteId], (err) => {
       if (err) {
         console.log(err);
         reject({
