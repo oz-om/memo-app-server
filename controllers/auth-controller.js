@@ -33,7 +33,9 @@ exports.login = (req, res) => {
       const { id, ...user } = result;
       res.cookie("j_own", j_own, {
         secure: true,
+        httpOnly: true,
         sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24,
       });
       res.send({
         login: true,
