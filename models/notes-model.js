@@ -8,10 +8,16 @@ exports.getNotes = (owenId) => {
       if (err) {
         console.log(err);
         connection.end();
-        reject(err);
+        reject({
+          state: false,
+          msg: "something went wrong! please try again",
+        });
       } else {
         connection.end();
-        resolve(result);
+        resolve({
+          state: true,
+          notes: result,
+        });
       }
     });
   });

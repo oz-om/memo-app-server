@@ -9,13 +9,13 @@ exports.getFolders = (ownerId) => {
         console.log(err);
         connection.end();
         reject({
-          res: false,
-          msg: "something went wrong!",
+          state: false,
+          msg: "something went wrong, please try again!",
         });
       } else {
         connection.end();
         resolve({
-          res: true,
+          state: true,
           folders: result,
         });
       }
