@@ -40,7 +40,6 @@ exports.login = (req, res) => {
       res.send({
         login: true,
         user,
-        j_own,
       });
     })
     .catch((err) => {
