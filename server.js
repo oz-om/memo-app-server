@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookie = require("cookie-parser");
+
 require("dotenv").config();
 
 const clientUrl = process.env.CLIENT_URL;
