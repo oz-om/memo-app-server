@@ -29,6 +29,7 @@ app.get("/", isUser, (req, res) => {
     });
   }
 });
+
 const routes = {
   authRoute: require("./routs/auth-route"),
   notesRoute: require("./routs/notesRoute"),
