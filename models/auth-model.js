@@ -40,8 +40,8 @@ exports.login = (data) => {
   const { email, password } = data;
   return new Promise((resolve, reject) => {
     let connection = db("login_user");
-    const sql = "SELECT * FROM users WHERE username = ? OR email = ?";
-    connection.query(sql, [email, email], (err, user) => {
+    const sql = "SELECT * FROM users WHERE email = ?";
+    connection.query(sql, email, (err, user) => {
       if (err) {
         console.log(err);
         connection.end();
