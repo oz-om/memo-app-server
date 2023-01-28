@@ -48,7 +48,10 @@ exports.login = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  res.clearCookie("j_own");
+  res.cookie("j_own", "", {
+    expires: new Date(Date.now() + 5 * 1000),
+    httpOnly: true,
+  });
   res.send({
     logout: true,
   });
