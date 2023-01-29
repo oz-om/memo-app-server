@@ -7,14 +7,14 @@ const initQuery = `CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(60) NOT NULL UNIQUE,
     password TEXT NOT NULL,
     created_at DATETIME NOT NULL DEFAULT NOW()
-    );
+    ) ENGINE=InnoDB;
   CREATE TABLE IF NOT EXISTS categories (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     folder VARCHAR(20) NOT NULL,
     user_id INT,
     CONSTRAINT owner_cat FOREIGN KEY (user_id) REFERENCES users(id)
     ON UPDATE CASCADE ON DELETE CASCADE
-    );
+    ) ENGINE=InnoDB;
   CREATE TABLE IF NOT EXISTS notes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
@@ -28,7 +28,7 @@ const initQuery = `CREATE TABLE IF NOT EXISTS users (
     ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT cat_owner FOREIGN KEY (category_id) REFERENCES categories(id)
     ON UPDATE CASCADE ON DELETE CASCADE
-    );`;
+    ) ENGINE=InnoDB;`;
 
 const mode = process.env.NODE_ENV;
 

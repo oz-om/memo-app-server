@@ -16,7 +16,7 @@ exports.getNotes = (owenId) => {
         connection.end();
         resolve({
           state: true,
-          notes: result,
+          notes: result.reverse(),
         });
       }
     });
