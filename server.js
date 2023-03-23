@@ -8,7 +8,6 @@ const axios = require("axios");
 const BodyForm = require("form-data");
 
 const clientUrl = process.env.CLIENT_URL;
-
 app.use(
   cors({
     origin: clientUrl,
