@@ -86,3 +86,24 @@ exports.deleteNote = (noteId) => {
     });
   });
 };
+
+exports.changeCategory = (noteId, to) => {
+  return new Promise((resolve, reject) => {
+    let connection = db("change-category");
+    let sql = "UPDATE notes SET category_id = ? WHERE id = ?";
+    connection.query(sql, [to, noteId], (err) => {
+      if (err) {
+        console.log(err);
+        reject({
+          isChange: false,
+          msg: "Opes! move note was failed!, something went wrong! pleas try again?",
+        });
+      } else {
+        resolve({
+          isChange: true,
+          msg: "note was moved successfully",
+        });
+      }
+    });
+  });
+};

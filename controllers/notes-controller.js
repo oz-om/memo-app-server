@@ -43,3 +43,14 @@ exports.deleteNote = (req, res) => {
       res.send(err);
     });
 };
+
+exports.changeCategory = (req, res) => {
+  notesModel
+    .changeCategory(req.body.noteId, req.body.to)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
