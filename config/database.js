@@ -17,8 +17,8 @@ const initQuery = `CREATE TABLE IF NOT EXISTS users (
     ) ENGINE=InnoDB;
   CREATE TABLE IF NOT EXISTS notes (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    category_id INT,
+    user_id INT NOT NULL,
+    category_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     note TEXT NOT NULL,
     atTime DATETIME NOT NULL,
